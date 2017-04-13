@@ -13,6 +13,8 @@ namespace ImmigrationAutoFill
     {
         static void Main(string[] args)
         {
+            Global.GlobalDefinition.driver = new ChromeDriver();
+
             LoginPage loginObj = new LoginPage();
             loginObj.loginSteps();
 

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace ImmigrationAutoFill
 {
@@ -155,22 +155,21 @@ namespace ImmigrationAutoFill
             
 
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection("whv.xlsx", "PersonalDetial");
+            Global.ExcelLib.PopulateInCollection("whv.xlsx", "PersonalDetail");
 
             //PERSONAL
-            familyNameTextBox.Clear();
-            givenName1Textbox.Clear();
-            familyNameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "familyname"));
-            givenName1Textbox.SendKeys(Global.ExcelLib.ReadData(2, "surname"));
+
+            familyNameTextBox.EnterValue(Global.ExcelLib.ReadData(2, "familyname"));
+            givenName1Textbox.EnterValue(Global.ExcelLib.ReadData(2, "surname"));
             new SelectElement(genderDropDownList).SelectByValue(Global.ExcelLib.ReadData(2, "gender"));
             new SelectElement(dateOfBithDatePicker_Day).SelectByValue(Global.ExcelLib.ReadData(2, "birth-day"));
             new SelectElement(dateOfBithDatePicker_Month).SelectByValue(Global.ExcelLib.ReadData(2, "birth-month"));
             new SelectElement(dateOfBithDatePicker_Year).SelectByValue(Global.ExcelLib.ReadData(2, "birth-year"));
             new SelectElement(countryDropDownList).SelectByText("China");
 
-            address1TextBox.SendKeys(Global.ExcelLib.ReadData(2, "street"));
-            suburbTextBox.SendKeys(Global.ExcelLib.ReadData(2, "subburb"));
-            cityTextBox.SendKeys(Global.ExcelLib.ReadData(2, "city"));
+            address1TextBox.EnterValue(Global.ExcelLib.ReadData(2, "street"));
+            suburbTextBox.EnterValue(Global.ExcelLib.ReadData(2, "subburb"));
+            cityTextBox.EnterValue(Global.ExcelLib.ReadData(2, "city"));
 
             new SelectElement(countryDropDownListforAddress).SelectByText("China");
             new SelectElement(hasAgent_representedByAgentDropdownlist).SelectByValue("No");
@@ -180,13 +179,13 @@ namespace ImmigrationAutoFill
             nextImageButton.Click();
 
             //Other Info
-            passportNumberTextBox.SendKeys(Global.ExcelLib.ReadData(2, "passport"));
-            confirmPassportNumberTextBox.SendKeys(Global.ExcelLib.ReadData(2, "passport"));
+            passportNumberTextBox.EnterValue(Global.ExcelLib.ReadData(2, "passport"));
+            confirmPassportNumberTextBox.EnterValue(Global.ExcelLib.ReadData(2, "passport"));
             new SelectElement(passportExpiryDateDatePicker_Day).SelectByValue(Global.ExcelLib.ReadData(2, "expire-day"));
             new SelectElement(passportExpiryDateDatePicker_Month).SelectByValue(Global.ExcelLib.ReadData(2, "expire-month"));
             new SelectElement(passportExpiryDateDatePicker_Year).SelectByValue(Global.ExcelLib.ReadData(2, "expire-year"));
-
-            new SelectElement(otherIdentificationDropdownlist).SelectByValue(Global.ExcelLib.ReadData(2, "id"));
+            Thread.Sleep(500);
+            new SelectElement(otherIdentificationDropdownlist).SelectByValue("3");
             new SelectElement(otherIssueDateDatePicker_Day).SelectByValue(Global.ExcelLib.ReadData(2, "issue-day"));
             new SelectElement(otherIssueDateDatePicker_Month).SelectByValue(Global.ExcelLib.ReadData(2, "issue-month"));
             new SelectElement(otherIssueDateDatePicker_Year).SelectByValue(Global.ExcelLib.ReadData(2, "issue-year"));
@@ -197,21 +196,21 @@ namespace ImmigrationAutoFill
             TabHeaders_ctl01_tabButton.Click();
 
             new SelectElement(renalDialysisDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
             new SelectElement(tuberculosisDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(300);
-            new SelectElement(cancerDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
+            new SelectElement(cancerDropDownList).SelectByText("No");
+            Thread.Sleep(1000);
             new SelectElement(heartDiseaseDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
             new SelectElement(disabilityDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
             new SelectElement(hospitalisationDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
             new SelectElement(residentailCareDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
             new SelectElement(tbRiskDropDownList).SelectByValue("No");
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(1000);
 
 
             //CHARACTER
@@ -235,14 +234,14 @@ namespace ImmigrationAutoFill
 
             new SelectElement(previousWhsPermitVisaDropDownList).SelectByValue("No");
             new SelectElement(sufficientFundsHolidayDropDownList).SelectByValue("Yes");
-            new SelectElement(intendedTravelDateDatePicker_Day).SelectByValue("11");
-            new SelectElement(intendedTravelDateDatePicker_Month).SelectByValue("1");
+            new SelectElement(intendedTravelDateDatePicker_Day).SelectByValue("30");
+            new SelectElement(intendedTravelDateDatePicker_Month).SelectByValue("11");
             new SelectElement(intendedTravelDateDatePicker_Year).SelectByValue("2017");
             new SelectElement(beenToNzDropDownList).SelectByValue(Global.ExcelLib.ReadData(2, "been-to-nz"));
-            System.Threading.Thread.Sleep(100);
-            new SelectElement(whenInNZDatePicker_Day).SelectByValue(Global.ExcelLib.ReadData(2, "day"));
-            new SelectElement(whenInNZDatePicker_Month).SelectByValue(Global.ExcelLib.ReadData(2, "month"));
-            new SelectElement(whenInNZDatePicker_Year).SelectByValue(Global.ExcelLib.ReadData(2, "year"));
+            Thread.Sleep(100);
+            //new SelectElement(whenInNZDatePicker_Day).SelectByValue(Global.ExcelLib.ReadData(2, "day"));
+            //new SelectElement(whenInNZDatePicker_Month).SelectByValue(Global.ExcelLib.ReadData(2, "month"));
+            //new SelectElement(whenInNZDatePicker_Year).SelectByValue(Global.ExcelLib.ReadData(2, "year"));
             new SelectElement(sufficientFundsOnwardTicketDropDownList).SelectByValue("Yes");
             new SelectElement(readRequirementsDropDownList).SelectByValue("Yes");
 

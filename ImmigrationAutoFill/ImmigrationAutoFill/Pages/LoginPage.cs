@@ -36,39 +36,46 @@ namespace ImmigrationAutoFill
         [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applyNowButton")]
         public IWebElement ApplyBtn { get; set; }
 
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_deleteHyperlink")]
+        public IWebElement deleteHyperlink { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_editHyperLink")]
+        public IWebElement editHyperLink { get; set; }
+       
+
 
         public void loginSteps()
         {
             
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection(@"C:\whv.xlsx", "LoginDetail");
+            Global.ExcelLib.PopulateInCollection("whv.xlsx", "LoginDetail");
 
-            IWebDriver driver = new ChromeDriver();
-
-            driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2,"url1"));
+            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2,"url1"));
             System.Threading.Thread.Sleep(1000);
-            
+            Global.GlobalDefinition.driver.Manage().Window.Maximize();
 
             UsernameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "username"));
             PasswordTextBox.SendKeys(Global.ExcelLib.ReadData(2, "password"));
             LoginBtn.Click();
 
-            driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
+            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
 
+
+            try { editHyperLink.Click();}
+            catch (Exception){Console.WriteLine("Sorry, there is no form acquired.");}
 
 
             try
             {
                 SelectElement oSelect = new SelectElement(CountryDropDown);
                 oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
-            }
-            catch (InvalidCastException e)
-            {
-                Console.WriteLine(e);
-            }
+                OKBtn.Click();
+                ApplyBtn.Click();
 
-            OKBtn.Click();
-            ApplyBtn.Click();
+            }
+            catch (Exception) { Console.WriteLine("Opps, China WHV Scheme is not available, please try again."); }
+
+
 
         }
 
