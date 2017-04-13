@@ -76,7 +76,7 @@ namespace ImmigrationAutoFill
         public IWebElement renalDialysisDropDownList { get; set; }
         [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_medicalConditions_tuberculosisDropDownList")]
         public IWebElement tuberculosisDropDownList { get; set; }
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_medicalConditions_")]
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_medicalConditions_cancerDropDownList")]
         public IWebElement cancerDropDownList { get; set; }
         [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_medicalConditions_heartDiseaseDropDownList")]
         public IWebElement heartDiseaseDropDownList { get; set; }
@@ -148,11 +148,42 @@ namespace ImmigrationAutoFill
         [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_wizardPageHeader_nav_submitImageButton")]
         public IWebElement submitImageButton { get; set; }
 
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_falseStatementCheckBox")]
+        public IWebElement falseStatementCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_notesCheckBox")]
+        public IWebElement notesCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_circumstancesCheckBox")]
+        public IWebElement circumstancesCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_warrantsCheckBox")]
+        public IWebElement warrantsCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_informationCheckBox")]
+        public IWebElement informationCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_healthCheckBox")]
+        public IWebElement healthCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_adviceCheckBox")]
+        public IWebElement adviceCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_registrationCheckBox")]
+        public IWebElement registrationCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_entitlementCheckbox")]
+        public IWebElement entitlementCheckbox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_permitExpiryCheckBox")]
+        public IWebElement permitExpiryCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_medicalInsuranceCheckBox")]
+        public IWebElement medicalInsuranceCheckBox { get; set; }
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_submitImageButton")]
+        public IWebElement filalSubmitImageButton { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='ctl00_ContentPlaceHolder1_preSubmitPane']/table/tbody/tr[1]/td/p[1]")]
+        public IWebElement verifyMessage { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_payNowImage")]
+        public IWebElement payNow { get; set; }
         
+
 
         public void FillingDetail()
         {
-            
+            PaymentPage payObj = new PaymentPage();
 
             //Populate in collection
             Global.ExcelLib.PopulateInCollection("whv.xlsx", "PersonalDetail");
@@ -178,6 +209,15 @@ namespace ImmigrationAutoFill
 
             nextImageButton.Click();
 
+            try
+            {
+                submitImageButton.Click();
+                SubmitPressed();
+                payObj.PaySteps();
+
+            }
+            catch (Exception) { Console.WriteLine("Sorry, please complete the form."); }
+
             //Other Info
             passportNumberTextBox.EnterValue(Global.ExcelLib.ReadData(2, "passport"));
             confirmPassportNumberTextBox.EnterValue(Global.ExcelLib.ReadData(2, "passport"));
@@ -196,11 +236,11 @@ namespace ImmigrationAutoFill
             TabHeaders_ctl01_tabButton.Click();
 
             new SelectElement(renalDialysisDropDownList).SelectByValue("No");
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             new SelectElement(tuberculosisDropDownList).SelectByValue("No");
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             new SelectElement(cancerDropDownList).SelectByText("No");
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             new SelectElement(heartDiseaseDropDownList).SelectByValue("No");
             Thread.Sleep(1000);
             new SelectElement(disabilityDropDownList).SelectByValue("No");
@@ -211,6 +251,18 @@ namespace ImmigrationAutoFill
             Thread.Sleep(1000);
             new SelectElement(tbRiskDropDownList).SelectByValue("No");
             Thread.Sleep(1000);
+
+
+            nextImageButton.Click();
+
+            try
+            {
+                submitImageButton.Click();
+                SubmitPressed();
+                payObj.PaySteps();
+
+            }
+            catch (Exception) { Console.WriteLine("Sorry, please complete the form."); }
 
 
             //CHARACTER
@@ -246,12 +298,40 @@ namespace ImmigrationAutoFill
             new SelectElement(readRequirementsDropDownList).SelectByValue("Yes");
 
 
-           nextImageButton.Click();
+            nextImageButton.Click();
 
+            try
+            {
+                submitImageButton.Click();
+                SubmitPressed();
+                payObj.PaySteps();
+
+            }
+            catch (Exception) { Console.WriteLine("Sorry, please complete the form."); }
+
+
+
+        }
+
+        public void SubmitPressed()
+        {
             //SUBMIT
-           //submitImageButton.Click();
+            
+            falseStatementCheckBox.Click();
+            notesCheckBox.Click();
+            circumstancesCheckBox.Click();
+            warrantsCheckBox.Click();
+            informationCheckBox.Click();
+            healthCheckBox.Click();
+            adviceCheckBox.Click();
+            registrationCheckBox.Click();
+            entitlementCheckbox.Click();
+            permitExpiryCheckBox.Click();
+            medicalInsuranceCheckBox.Click();
 
+            filalSubmitImageButton.ClickAndWait();
 
+            payNow.ClickAndWait();
 
         }
     }

@@ -17,7 +17,6 @@ namespace ImmigrationAutoFill
             PageFactory.InitElements(Global.GlobalDefinition.driver, this);
         }
 
-
         [FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_userNameTextBox")]
         public IWebElement UsernameTextBox { get; set; }
 
@@ -41,12 +40,19 @@ namespace ImmigrationAutoFill
 
         [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_editHyperLink")]
         public IWebElement editHyperLink { get; set; }
-       
+
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_submitHyperlink")]
+        public IWebElement submitHyperlink { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_statusLabel")]
+        public IWebElement statusLabel { get; set; }
+
+        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_payHyperLink")]
+        public IWebElement payHyperLink { get; set; }
 
 
         public void loginSteps()
         {
-            
             //Populate in collection
             Global.ExcelLib.PopulateInCollection("whv.xlsx", "LoginDetail");
 
@@ -61,19 +67,65 @@ namespace ImmigrationAutoFill
             Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
 
 
-            try { editHyperLink.Click();}
-            catch (Exception){Console.WriteLine("Sorry, there is no form acquired.");}
+            string editStatus = "Incomplete";
+            string submitStatus = "Completed pending submission";
+            string payStatus = "Submitted";
 
 
-            try
+            DataPage dataObj = new DataPage();
+
+            if (editStatus.Equals(statusLabel.Text))
             {
-                SelectElement oSelect = new SelectElement(CountryDropDown);
-                oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
-                OKBtn.Click();
-                ApplyBtn.Click();
+                try
+                {
+                    editHyperLink.Click();
+                   
+                }
+                catch (Exception) { Console.WriteLine("Sorry, there is no form to edit."); }
+            }
+
+            else if (submitStatus.Equals(statusLabel.Text))
+            {
+                try
+                {
+                    submitHyperlink.Click();
+                    
+
+                }
+                catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
 
             }
-            catch (Exception) { Console.WriteLine("Opps, China WHV Scheme is not available, please try again."); }
+            else if (payStatus.Equals(statusLabel.Text))
+            {
+                try
+                {
+                    payHyperLink.Click();
+
+
+                }
+                catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
+
+            }
+
+
+            else
+            {
+                try
+                {
+                    SelectElement oSelect = new SelectElement(CountryDropDown);
+                    oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
+                    OKBtn.Click();
+                    ApplyBtn.Click();
+                   
+
+                }
+                catch (Exception) { Console.WriteLine("Exception caught."); }
+
+            }
+
+
+
+
 
 
 
