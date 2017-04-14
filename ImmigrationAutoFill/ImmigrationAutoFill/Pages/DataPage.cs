@@ -329,9 +329,9 @@ namespace ImmigrationAutoFill
             permitExpiryCheckBox.Click();
             medicalInsuranceCheckBox.Click();
 
-            filalSubmitImageButton.ClickAndWait();
+            //filalSubmitImageButton.ClickAndWait();
 
-            payNow.ClickAndWait();
+           // payNow.ClickAndWait();
 
         }
     }

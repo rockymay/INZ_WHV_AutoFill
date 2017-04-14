@@ -39,24 +39,24 @@ namespace ImmigrationAutoFill
         [FindsBy(How = How.Id, Using = "registrationCompleteMessagePanel")]
         public IWebElement actualMessage { get; set; }
 
-        public void RegisterStep()
+        public void RegisterStep(int line)
         {
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection("whv.xlsx", "RegisterPage");
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "RegisterPage");
 
-            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url"));
+            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(line, "url"));
             System.Threading.Thread.Sleep(1000);
             Global.GlobalDefinition.driver.Manage().Window.Maximize();
 
-            firstNameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "firstNameTextBox"));
-            familyNameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "familyNameTextBox")); ;
-            emailAddressTextBox.SendKeys(Global.ExcelLib.ReadData(2, "emailAddressTextBox")); ;
-            userNameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "userNameTextBox")); ;
-            passwordTextBox.SendKeys(Global.ExcelLib.ReadData(2, "passwordTextBox")); ;
-            passwordConfirmTextBox.SendKeys(Global.ExcelLib.ReadData(2, "passwordTextBox")); ;
+            firstNameTextBox.SendKeys(Global.ExcelLib.ReadData(line, "firstNameTextBox"));
+            familyNameTextBox.SendKeys(Global.ExcelLib.ReadData(line, "familyNameTextBox")); ;
+            emailAddressTextBox.SendKeys(Global.ExcelLib.ReadData(line, "emailAddressTextBox")); ;
+            userNameTextBox.SendKeys(Global.ExcelLib.ReadData(line, "userNameTextBox")); ;
+            passwordTextBox.SendKeys(Global.ExcelLib.ReadData(line, "passwordTextBox")); ;
+            passwordConfirmTextBox.SendKeys(Global.ExcelLib.ReadData(line, "passwordTextBox")); ;
             new SelectElement(secretQuestionDropDownList).SelectByIndex(3);
-            secretQuestionDropDownList.SendKeys(Global.ExcelLib.ReadData(2, "firstNameTextBox")); ;
-            secretAnswerTextBox.SendKeys(Global.ExcelLib.ReadData(2, "secretAnswerTextBox")); ;
+            secretQuestionDropDownList.SendKeys(Global.ExcelLib.ReadData(line, "firstNameTextBox")); ;
+            secretAnswerTextBox.SendKeys(Global.ExcelLib.ReadData(line, "secretAnswerTextBox")); ;
             agreeToConditionsCheckBox.ClickAndWait();
             registerImageButton.ClickAndWait();
 

@@ -20,7 +20,7 @@ namespace ImmigrationAutoFill
 
 
             //RegisterPage registerObj = new RegisterPage();
-            //registerObj.RegisterStep();
+            //registerObj.RegisterStep(3);
 
             LoginPage loginObj = new LoginPage();
             loginObj.loginSteps();

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImmigrationAutoFill
@@ -82,11 +83,24 @@ namespace ImmigrationAutoFill
             //Check if there is an existing form
             if (contentText.Contains(newForm))
             {
-                //There is no form
-                SelectElement oSelect = new SelectElement(CountryDropDown);
-                oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
-                OKBtn.Click();
-                ApplyBtn.Click();
+                
+                for (int i = 1; i < 1000; i++)
+                {
+
+                    //There is no form
+                    SelectElement oSelect = new SelectElement(CountryDropDown);
+                    oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
+                    OKBtn.Click();
+                    try { ApplyBtn.Click(); break; }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Unfortunately the available places is filled, attemp: {0}", i);
+                        Global.GlobalDefinition.driver.Navigate().GoToUrl("https://onlineservices.immigration.govt.nz/WorkingHoliday/");
+                        //Thread.Sleep(700);
+                        Console.WriteLine(Global.GlobalDefinition.driver.FindElement(By.XPath("//*[@id='aspnetForm']/table[3]/tbody/tr[2]/td/div/div/p[2]")).Text);
+                    }
+
+                }
             }
 
 
