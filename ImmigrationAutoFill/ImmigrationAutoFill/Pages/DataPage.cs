@@ -186,7 +186,7 @@ namespace ImmigrationAutoFill
             PaymentPage payObj = new PaymentPage();
 
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection("whv.xlsx", "PersonalDetail");
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
 
             //PERSONAL
 

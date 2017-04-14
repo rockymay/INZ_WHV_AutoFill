@@ -60,8 +60,8 @@ namespace ImmigrationAutoFill
         public void PaySteps()
         {
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection("whv.xlsx", "PaymentDetail");
-
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PaymentDetail");
+           
             //PERSONAL
             onlinePaymentAnchor.Click();
             payorNameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "carholder"));

@@ -54,11 +54,12 @@ namespace ImmigrationAutoFill
         public void loginSteps()
         {
             //Populate in collection
-            Global.ExcelLib.PopulateInCollection("whv.xlsx", "LoginDetail");
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "LoginDetail");
 
             Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2,"url1"));
             System.Threading.Thread.Sleep(1000);
             Global.GlobalDefinition.driver.Manage().Window.Maximize();
+            Global.GlobalDefinition.driver.Navigate().Refresh();
 
             UsernameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "username"));
             PasswordTextBox.SendKeys(Global.ExcelLib.ReadData(2, "password"));
@@ -66,67 +67,50 @@ namespace ImmigrationAutoFill
 
             Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
 
+            DataPage dataObj = new DataPage();
 
             string editStatus = "Incomplete";
             string submitStatus = "Completed pending submission";
             string payStatus = "Submitted";
 
+            string contentText = Global.GlobalDefinition.driver.FindElement(By.XPath("/html/body")).Text;
+            Console.WriteLine(contentText);
 
-            DataPage dataObj = new DataPage();
+            string newForm = "If you decide not to submit your application, you can delete it.";
+            string existForm = "Reference";
 
-            if (editStatus.Equals(statusLabel.Text))
+            //Check if there is an existing form
+            if (contentText.Contains(newForm))
             {
-                try
-                {
-                    editHyperLink.Click();
-                   
-                }
-                catch (Exception) { Console.WriteLine("Sorry, there is no form to edit."); }
-            }
-
-            else if (submitStatus.Equals(statusLabel.Text))
-            {
-                try
-                {
-                    submitHyperlink.Click();
-                    
-
-                }
-                catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
-
-            }
-            else if (payStatus.Equals(statusLabel.Text))
-            {
-                try
-                {
-                    payHyperLink.Click();
-
-
-                }
-                catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
-
+                //There is no form
+                SelectElement oSelect = new SelectElement(CountryDropDown);
+                oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
+                OKBtn.Click();
+                ApplyBtn.Click();
             }
 
 
-            else
+            else if (contentText.Contains(existForm))
             {
-                try
+                if (editStatus.Equals(statusLabel.Text))
                 {
-                    SelectElement oSelect = new SelectElement(CountryDropDown);
-                    oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
-                    OKBtn.Click();
-                    ApplyBtn.Click();
-                   
+                    try { editHyperLink.Click(); }
+                    catch (Exception) { Console.WriteLine("Sorry, there is no form to edit."); }
+                }
+
+                else if (submitStatus.Equals(statusLabel.Text))
+                {
+                    try { submitHyperlink.Click(); }
+                    catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
 
                 }
-                catch (Exception) { Console.WriteLine("Exception caught."); }
-
+                else if (payStatus.Equals(statusLabel.Text))
+                {
+                    try { payHyperLink.Click(); }
+                    catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
+                }
             }
-
-
-
-
-
+            
 
 
         }
