@@ -6,14 +6,70 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImmigrationAutoFill.Global
 {
     class GlobalDefinition
     {
-        public static IWebDriver driver{get; set;}
+        public static IWebDriver driver { get; set; }
+
+        
+        public static void TextBox(IWebDriver driver, string locator, string locatorValue, string inputValue)
+        {
+            switch (locator)
+            {
+                case "Id":
+                    driver.FindElement(By.Id(locatorValue)).Clear();
+                    driver.FindElement(By.Id(locatorValue)).SendKeys(inputValue);
+                    break;
+                case "XPath":
+                    driver.FindElement(By.XPath(locatorValue)).Clear();
+                    driver.FindElement(By.XPath(locatorValue)).SendKeys(inputValue);
+                    break;
+                case "CssSelector":
+                    driver.FindElement(By.CssSelector(locatorValue)).Clear();
+                    driver.FindElement(By.CssSelector(locatorValue)).SendKeys(inputValue);
+                    break;
+                default: Console.WriteLine("Incorrect Xpath Value"); break;
+            }
+        }
+        public static void ActionButton(IWebDriver driver, string locator, string locatorValue)
+        {
+            switch (locator)
+            {
+                case "Id":
+                    driver.FindElement(By.Id(locatorValue)).Click();
+                    Thread.Sleep(500);
+                    break;
+                case "XPath":
+                    driver.FindElement(By.XPath(locatorValue)).Click();
+                    Thread.Sleep(500);
+                    break;
+                case "CssSelector":
+                    driver.FindElement(By.CssSelector(locatorValue)).Click();
+                    Thread.Sleep(500);
+                    break;
+                default: Console.WriteLine("Incorrect Xpath Value"); break;
+            }
+        }
+        public static IWebElement Element (IWebDriver driver, string locator, string locatorValue)
+        {
+            
+            switch (locator)
+            {
+                case "Id": return driver.FindElement(By.Id(locatorValue));
+                case "XPath": return driver.FindElement(By.XPath(locatorValue));
+                case "CssSelector": return driver.FindElement(By.CssSelector(locatorValue));
+                default: return null;
+            }
+
+
+        }
     }
+
+
 
 
     public class ExcelLib

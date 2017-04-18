@@ -18,55 +18,60 @@ namespace ImmigrationAutoFill
             PageFactory.InitElements(Global.GlobalDefinition.driver, this);
         }
 
-        [FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_userNameTextBox")]
-        public IWebElement UsernameTextBox { get; set; }
+        //[FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_userNameTextBox")]
+        //public IWebElement UsernameTextBox { get; set; }
 
-        [FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_passwordTextBox")]
-        public IWebElement PasswordTextBox { get; set; }
+        //[FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_passwordTextBox")]
+        //public IWebElement PasswordTextBox { get; set; }
 
-        [FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_loginImageButton")]
-        public IWebElement LoginBtn { get; set; }
+        //[FindsBy(How = How.Id, Using = "OnlineServicesLoginStealth_VisaLoginControl_loginImageButton")]
+        //public IWebElement LoginBtn { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_countryDropDownList")]
-        public IWebElement CountryDropDown { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_countryDropDownList")]
+        //public IWebElement CountryDropDown { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_okButton")]
-        public IWebElement OKBtn { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_okButton")]
+        //public IWebElement OKBtn { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applyNowButton")]
-        public IWebElement ApplyBtn { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applyNowButton")]
+        //public IWebElement ApplyBtn { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_deleteHyperlink")]
-        public IWebElement deleteHyperlink { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_deleteHyperlink")]
+        //public IWebElement deleteHyperlink { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_editHyperLink")]
-        public IWebElement editHyperLink { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_editHyperLink")]
+        //public IWebElement editHyperLink { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_submitHyperlink")]
-        public IWebElement submitHyperlink { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_submitHyperlink")]
+        //public IWebElement submitHyperlink { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_statusLabel")]
-        public IWebElement statusLabel { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_statusLabel")]
+        //public IWebElement statusLabel { get; set; }
 
-        [FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_payHyperLink")]
-        public IWebElement payHyperLink { get; set; }
+        //[FindsBy(How = How.Id, Using = "ctl00_ContentPlaceHolder1_applicationList_applicationsDataGrid_ctl02_payHyperLink")]
+        //public IWebElement payHyperLink { get; set; }
 
 
         public void loginSteps()
         {
+            var globalDrive = Global.GlobalDefinition.driver;
+            
             //Populate in collection
             Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "LoginDetail");
 
-            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2,"url1"));
+            globalDrive.Navigate().GoToUrl(Global.ExcelLib.ReadData(2,"url1"));
             System.Threading.Thread.Sleep(1000);
-            Global.GlobalDefinition.driver.Manage().Window.Maximize();
-            Global.GlobalDefinition.driver.Navigate().Refresh();
+            globalDrive.Manage().Window.Maximize();
+            globalDrive.Navigate().Refresh();
 
-            UsernameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "username"));
-            PasswordTextBox.SendKeys(Global.ExcelLib.ReadData(2, "password"));
-            LoginBtn.Click();
+            //UsernameTextBox.SendKeys(Global.ExcelLib.ReadData(2, "username"));
+            //PasswordTextBox.SendKeys(Global.ExcelLib.ReadData(2, "password"));
+            //LoginBtn.Click();
+            Global.GlobalDefinition.TextBox(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(2, "locatorValue"), Global.ExcelLib.ReadData(2, "username"));
+            Global.GlobalDefinition.TextBox(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(3, "locatorValue"), Global.ExcelLib.ReadData(2, "username"));
+            Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(4, "locatorValue"));
 
-            Global.GlobalDefinition.driver.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
+            globalDrive.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
 
             DataPage dataObj = new DataPage();
 
@@ -88,10 +93,11 @@ namespace ImmigrationAutoFill
                 {
 
                     //There is no form
-                    SelectElement oSelect = new SelectElement(CountryDropDown);
+                    SelectElement oSelect = new SelectElement(Global.GlobalDefinition.Element(globalDrive, "Id", Global.ExcelLib.ReadData(2, "County")));
                     oSelect.SelectByText(Global.ExcelLib.ReadData(2, "country"));
-                    OKBtn.Click();
-                    try { ApplyBtn.Click(); break; }
+                    //OKBtn.Click();
+                    Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(4, "locatorValue"));
+                    try { Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(7, "locatorValue")); break; }
                     catch (Exception)
                     {
                         Console.WriteLine("Unfortunately the available places is filled, attemp: {0}", i);
@@ -106,21 +112,21 @@ namespace ImmigrationAutoFill
 
             else if (contentText.Contains(existForm))
             {
-                if (editStatus.Equals(statusLabel.Text))
+                if (editStatus.Equals(Global.GlobalDefinition.Element(globalDrive, "Id", Global.ExcelLib.ReadData(12, "locatorValue")).Text))
                 {
-                    try { editHyperLink.Click(); }
+                    try { Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(9, "locatorValue")); }
                     catch (Exception) { Console.WriteLine("Sorry, there is no form to edit."); }
                 }
 
-                else if (submitStatus.Equals(statusLabel.Text))
+                else if (submitStatus.Equals(Global.GlobalDefinition.Element(globalDrive, "Id", Global.ExcelLib.ReadData(12, "locatorValue")).Text))
                 {
-                    try { submitHyperlink.Click(); }
+                    try { Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(10, "locatorValue")); }
                     catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
 
                 }
-                else if (payStatus.Equals(statusLabel.Text))
+                else if (payStatus.Equals(Global.GlobalDefinition.Element(globalDrive, "Id", Global.ExcelLib.ReadData(12, "locatorValue")).Text))
                 {
-                    try { payHyperLink.Click(); }
+                    try { Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(11, "locatorValue")); }
                     catch (Exception) { Console.WriteLine("Sorry, you can't submit now."); }
                 }
             }
