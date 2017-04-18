@@ -22,64 +22,79 @@ namespace ImmigrationAutoFill.Pages
             //Globalize driver
             PageFactory.InitElements(Global.GlobalDefinition.driver, this);
 
-            //Populate in collection
-            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+            
 
 
         }
 
         public void CheckTableFilled(ref bool[] pageTable)
         {
-            
-            string profileIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(2, "pageIcon")).GetAttribute("src");
-            string healthIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(3, "pageIcon")).GetAttribute("src");
-            string characterIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(4, "pageIcon")).GetAttribute("src");
-            string WHVIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(5, "pageIcon")).GetAttribute("src");
-            Console.WriteLine(profileIcon);
-            Console.WriteLine(healthIcon);
-            Console.WriteLine(characterIcon);
-            Console.WriteLine(WHVIcon);
-            
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
 
-            pageTable[0] = profileIcon.Contains("error") ? true : false;
-            pageTable[1] = healthIcon.Contains("error") ? true : false;
-            pageTable[2] = characterIcon.Contains("error") ? true : false;
-            pageTable[3] = WHVIcon.Contains("error") ? true : false;
-            foreach (bool item in pageTable) { Console.WriteLine(item); }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                string statusImage = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", "ctl00_ContentPlaceHolder1_wizardPageHeader_nav_sectionTabs_TabHeaders_ctl0" + i + "_statusImage").GetAttribute("src");
+                Console.WriteLine(statusImage);
+                pageTable[i] = statusImage.Contains("error") ? false : true;
+            }
+
 
         }
-
+        private bool[] pageTable = new bool[4];
 
         public void DataFillSteps()
         {
-            bool[] update = new bool[4];
-            CheckTableFilled(ref update);
-            Console.WriteLine("Update: "); 
-            foreach (bool item in update) { Console.WriteLine(item); }
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
 
-            if (update[0] && update[1] && update[2] && update[3])
+           
+            CheckTableFilled(ref pageTable);
+            
+            //string profileIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(2, "pageIcon"))).GetAttribute("src");
+            //string healthIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(3, "pageIcon")).GetAttribute("src");
+            //string characterIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(4, "pageIcon")).GetAttribute("src");
+            //string WHVIcon = Global.GlobalDefinition.Element(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(5, "pageIcon")).GetAttribute("src");
+            //Console.WriteLine(profileIcon);
+            //Console.WriteLine(healthIcon);
+            //Console.WriteLine(characterIcon);
+            //Console.WriteLine(WHVIcon);
+            //pageTable[0] = profileIcon.Contains("error") ? true : false;
+            //pageTable[1] = healthIcon.Contains("error") ? true : false;
+            //pageTable[2] = characterIcon.Contains("error") ? true : false;
+            //pageTable[3] = WHVIcon.Contains("error") ? true : false;
+            foreach (bool item in pageTable) { Console.WriteLine(item); }
+
+
+
+            Console.WriteLine("pageTable: "); 
+            foreach (bool item in pageTable) { Console.WriteLine(item); }
+
+           for (int i = 0; i<10; i++)
             {
-                try
+                if (pageTable[0] && pageTable[1] && pageTable[2] && pageTable[3])
                 {
-                    Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(12, "pageTab")));
-                    Submit();
+                    try
+                    {
+                        Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(12, "pageTab")));
+                        Submit();
+                    }
+                    catch (Exception) { Console.WriteLine("Oh oh, you cant submit now."); }
                 }
-                catch (Exception) { Console.WriteLine("Oh oh"); }
-            }
-            else
-            {   
-                for (int i = 0; i<4; i++)
+                else
                 {
-                    if (update[0]) { Personal(); }
+                    if (!pageTable[0]) { Personal(); }
                     else
                     {
-                        if (update[1]) { Health(); }
+                        if (!pageTable[1]) { Health(); }
                         else
                         {
-                            if (update[2]) { Character(); }
+                            if (!pageTable[2]) { Character(); }
                             else
                             {
-                                if (update[3]) { WHV(); }
+                                if (!pageTable[3]) { WHV(); }
                             }
                         }
                     }
@@ -91,6 +106,9 @@ namespace ImmigrationAutoFill.Pages
 
         public void Personal()
         {
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id",  (Global.ExcelLib.ReadData(2, "pageTab")));
             //First & Last Name  &&  Address, Suburb, City, Country
             Global.GlobalDefinition.TextBox(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(2, "personalDetail"), (Global.ExcelLib.ReadData(2, "name")));
@@ -127,10 +145,16 @@ namespace ImmigrationAutoFill.Pages
 
             //Save
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(7, "pageTab")));
+
+            CheckTableFilled(ref pageTable);
         }
 
         public void Health()
         {
+
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(3, "pageTab")));
 
             string message = "Please try again later.";
@@ -157,10 +181,14 @@ namespace ImmigrationAutoFill.Pages
             //Global.GlobalDefinition.DropDown(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(10, "health"), "No");
             //Save
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(7, "pageTab")));
+            CheckTableFilled(ref pageTable);
         }
 
         public void Character()
         {
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(4, "pageTab")));
 
             Global.GlobalDefinition.DropDown(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(2, "character"), "No");
@@ -174,10 +202,16 @@ namespace ImmigrationAutoFill.Pages
             Global.GlobalDefinition.DropDown(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(10, "character"), "No");
             //Save
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(7, "pageTab")));
+
+            CheckTableFilled(ref pageTable);
         }
 
         public void WHV()
         {
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+
+
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(5, "pageTab")));
             //Previously hold WHV?
             Global.GlobalDefinition.DropDown(Global.GlobalDefinition.driver, "Id", Global.ExcelLib.ReadData(2, "whv"), "No");
@@ -209,10 +243,14 @@ namespace ImmigrationAutoFill.Pages
             //Save
             Global.GlobalDefinition.ActionButton(Global.GlobalDefinition.driver, "Id", (Global.ExcelLib.ReadData(7, "pageTab")));
 
+            CheckTableFilled(ref pageTable);
         }
 
         public void Submit()
         {
+            //Populate in collection
+            Global.ExcelLib.PopulateInCollection(@"C:\Users\rockymay\Desktop\whv.xlsx", "PersonalDetail");
+
             for (int i=2; i<14; i++)
             {
                 Console.WriteLine(i);

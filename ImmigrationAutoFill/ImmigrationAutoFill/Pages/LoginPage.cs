@@ -76,21 +76,15 @@ namespace ImmigrationAutoFill
             System.Threading.Thread.Sleep(1000);
             globalDrive.Manage().Window.Maximize();
  
-
-            Console.WriteLine(Global.ExcelLib.ReadData(2, "locatorValue"));
-            Console.WriteLine(Global.ExcelLib.ReadData(2, "username"));
+            //Login attemp
             Global.GlobalDefinition.TextBox(globalDrive, "Id", (Global.ExcelLib.ReadData(2, "locatorValue")), (Global.ExcelLib.ReadData(2, "username")));
-          
             Global.GlobalDefinition.TextBox(globalDrive, "Id", Global.ExcelLib.ReadData(3, "locatorValue"), Global.ExcelLib.ReadData(2, "password"));
             Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(4, "locatorValue"));
-
             globalDrive.Navigate().GoToUrl(Global.ExcelLib.ReadData(2, "url2"));
             
 
-
+            //Compare new page and already have form page
             string contentText = Global.GlobalDefinition.Element(globalDrive, "XPath", Global.ExcelLib.ReadData(13, "locatorValue")).Text;
-            
-
             //Check if there is an existing form
             if (contentText.Contains(newForm))
             {
@@ -107,8 +101,9 @@ namespace ImmigrationAutoFill
                     {
                         Global.GlobalDefinition.ActionButton(globalDrive, "Id", Global.ExcelLib.ReadData(7, "locatorValue")); //Apply Button
 
-                        Console.WriteLine("Form taken at time: " + DateTime.Now.ToString("_dd-mm-yyyy_mss"));
-                       
+                        Console.WriteLine("Form taken at time: " + DateTime.Now.ToString("_yyy-mm-dd_mss"));
+                        Console.WriteLine(Global.SaveScreenShotClass.SaveScreenshot(Global.GlobalDefinition.driver, "FormTaken"));
+                        Console.WriteLine("You are at: " + Global.GlobalDefinition.driver.Url);
                         break;
                     }
                     catch (Exception)

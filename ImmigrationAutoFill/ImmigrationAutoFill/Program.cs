@@ -24,15 +24,17 @@ namespace ImmigrationAutoFill
             //registerObj.RegisterStep(3);
 
             LoginPage loginObj = new LoginPage();
-            loginObj.loginSteps(1000); //try login for 1000 times
             DetailAutoFill dataObj = new DetailAutoFill();
-            
             PaymentPage payObj = new PaymentPage();
 
+
+            loginObj.loginSteps(1000); //try login for 1000 times
+            
             string url = Global.GlobalDefinition.driver.Url;
-            Global.SaveScreenShotClass.SaveScreenshot(Global.GlobalDefinition.driver, "WHV-Successful");//Save it 
+            Console.WriteLine("This is url acquired from Program.cs:  " + url);
+
             //After login, check for url if it's Edit/Submit/Pay
-            if (url.Contains("Personal"))
+            if (url.Contains("Personal1") && url.Contains("Individual"))
             {
                 dataObj.DataFillSteps();
                

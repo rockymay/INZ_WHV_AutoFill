@@ -193,12 +193,10 @@ namespace ImmigrationAutoFill.Global
             var screenShot = ((ITakesScreenshot)driver).GetScreenshot();
             var fileName = new StringBuilder();
 
-            fileName.Append(ScreenShotFileName);
-            fileName.Append(DateTime.Now.ToString("_dd-mm-yyyy_mss"));
-            //fileName.Append(DateTime.Now.ToString("dd-mm-yyyym_ss"));
-            //fileName.Append(".jpeg");
-            screenShot.SaveAsFile(fileName.ToString(), ScreenshotImageFormat.Jpeg);
-            //screenShot.SaveAsFile(fileName.ToString(), System.Drawing.Imaging.ImageFormat.Jpeg);
+            fileName.Append(@"\" + ScreenShotFileName);
+            fileName.Append(DateTime.Now.ToString("_yyyy_MM_dd_mss"));
+            fileName.Append(".png");
+            screenShot.SaveAsFile(fileName.ToString(), ScreenshotImageFormat.Png);
             return fileName.ToString();
         }
     }
