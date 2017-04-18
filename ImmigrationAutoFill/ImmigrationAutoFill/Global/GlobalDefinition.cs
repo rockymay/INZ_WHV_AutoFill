@@ -1,5 +1,6 @@
 ﻿using Excel;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -54,6 +55,17 @@ namespace ImmigrationAutoFill.Global
                 default: Console.WriteLine("Incorrect Xpath Value"); break;
             }
         }
+        public static void DropDown(IWebDriver driver, string locator, string locatorValue, string value)
+        {
+            switch (locator)
+            {
+                case "Id": new SelectElement(driver.FindElement(By.Id(locatorValue))).SelectByValue(value); break;
+                case "XPath": new SelectElement(driver.FindElement(By.XPath(locatorValue))).SelectByValue(value); break;
+                case "CssSelector": new SelectElement(driver.FindElement(By.CssSelector(locatorValue))).SelectByValue(value); break;
+                default: Console.WriteLine("Incorrect Xpath Value"); break;
+            }
+        }
+       
         public static IWebElement Element (IWebDriver driver, string locator, string locatorValue)
         {
             
@@ -62,6 +74,9 @@ namespace ImmigrationAutoFill.Global
                 case "Id": return driver.FindElement(By.Id(locatorValue));
                 case "XPath": return driver.FindElement(By.XPath(locatorValue));
                 case "CssSelector": return driver.FindElement(By.CssSelector(locatorValue));
+                case "ClassName": return driver.FindElement(By.ClassName(locatorValue));
+                case "LinkText": return driver.FindElement(By.LinkText(locatorValue));
+                case "TagName": return driver.FindElement(By.TagName(locatorValue));
                 default: return null;
             }
 
@@ -167,4 +182,24 @@ namespace ImmigrationAutoFill.Global
         }
     }
 
+
+    public class SaveScreenShotClass
+    {
+        public static string SaveScreenshot(IWebDriver driver, string ScreenShotFileName) // Definition
+        {
+            string folderLocation = Environment.CurrentDirectory;
+            Console.WriteLine(folderLocation);
+
+            var screenShot = ((ITakesScreenshot)driver).GetScreenshot();
+            var fileName = new StringBuilder();
+
+            fileName.Append(ScreenShotFileName);
+            fileName.Append(DateTime.Now.ToString("_dd-mm-yyyy_mss"));
+            //fileName.Append(DateTime.Now.ToString("dd-mm-yyyym_ss"));
+            //fileName.Append(".jpeg");
+            screenShot.SaveAsFile(fileName.ToString(), ScreenshotImageFormat.Jpeg);
+            //screenShot.SaveAsFile(fileName.ToString(), System.Drawing.Imaging.ImageFormat.Jpeg);
+            return fileName.ToString();
+        }
+    }
 }

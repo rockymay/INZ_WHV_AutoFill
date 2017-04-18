@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ImmigrationAutoFill.Pages;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
@@ -23,24 +24,23 @@ namespace ImmigrationAutoFill
             //registerObj.RegisterStep(3);
 
             LoginPage loginObj = new LoginPage();
-            loginObj.loginSteps();
-
-            DataPage dataObj = new DataPage();
+            loginObj.loginSteps(1000); //try login for 1000 times
+            DetailAutoFill dataObj = new DetailAutoFill();
+            
             PaymentPage payObj = new PaymentPage();
 
             string url = Global.GlobalDefinition.driver.Url;
-
-
+            Global.SaveScreenShotClass.SaveScreenshot(Global.GlobalDefinition.driver, "WHV-Successful");//Save it 
+            //After login, check for url if it's Edit/Submit/Pay
             if (url.Contains("Personal"))
             {
-                dataObj.FillingDetail();
-                dataObj.SubmitPressed();
-
+                dataObj.DataFillSteps();
+               
             }
 
             else if (url.Contains("Submit"))
             {
-                dataObj.SubmitPressed();
+                dataObj.Submit();
             }
 
             else if (url.Contains("Pay"))
@@ -50,8 +50,8 @@ namespace ImmigrationAutoFill
             }
 
 
-            
-           
+        
+
 
 
 

@@ -91,8 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global\ExtensionIWebElement.cs" />
-    <Compile Include="Pages\DataPage.cs" />
     <Compile Include="Global\GlobalDefinition.cs" />
+    <Compile Include="Pages\DetailAutoFill.cs" />
     <Compile Include="Pages\LoginPage.cs" />
     <Compile Include="Pages\PaymentPage.cs" />
     <Compile Include="Pages\RegisterPage.cs" />
@@ -103,7 +103,6 @@
     <None Include="App.config" />
     <None Include="ImmigrationAutoFill_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="whv.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
